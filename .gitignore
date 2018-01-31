@@ -1,5 +1,6 @@
 .DS_Store
 .idea
 .vagrant
+.vscode
 cmake-build-debug
 ubuntu-xenial-16.04-cloudimg-console.log
