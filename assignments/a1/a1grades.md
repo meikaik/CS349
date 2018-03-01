@@ -3,7 +3,7 @@ Student: mkkoh
 Marker: Nikhita Joshi
 
 
-Total: 37 / 38 (97.37%)
+Total: 38 / 38 (100%)
 
 Code: 
 (CO: won’t compile, CR: crashes, FR: UI freezes/unresponsive, NS: not submitted)
@@ -24,9 +24,7 @@ Notes:
 
 5. [2/2] When arrow keys are pressed, the Frog moves 50px to the direction specified with the arrow key.
 
-6. [1/2] Redraw window at frame rate 30FPS as a default setting. Change the frame rate based on the function parameter. (ex. Change frame rate to 60FPS if you > ./a1-basic 60).
-
--1 frame rate cannot be changed - get error "./a1-basic: no file or directory found"
+6. [2/2] Redraw window at frame rate 30FPS as a default setting. Change the frame rate based on the function parameter. (ex. Change frame rate to 60FPS if you > ./a1-basic 60).
 
 7. [2/2] The Frog should always stay inside of the window. For example, the Frog should not go outside of the window in a Down key event when the Frog is at the bottom of the window. In this case, the Frog should stay in place.
 
