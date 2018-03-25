@@ -24,6 +24,10 @@
             android:label="Question"
             >
         </activity>
+        <activity android:name=".ResultsActivity"
+            android:label="Results"
+            >
+        </activity>
     </application>
 
 </manifest>

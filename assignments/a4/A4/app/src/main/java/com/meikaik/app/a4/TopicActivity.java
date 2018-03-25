@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.view.View;
 
 
+
 public class TopicActivity extends AppCompatActivity {
 
     String username;

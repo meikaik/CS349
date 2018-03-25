@@ -18,13 +18,29 @@ public class QuestionLib {
             {"Canada", "Taiwan", "South Africa", "United Kingdom"},
     };
 
-    private String Answers[][] = {
-            {"Canada"},
-            {"Brazil", "Argentina"},
-            {"China"},
-            {"South Korea"},
-            {"South Africa", "United Kingdom"},
+    private boolean Answers[][] = {
+            {true, false, false, false},
+            {true, false, true, false},
+            {false, false, true, false},
+            {false, false, false, true},
+            {false, false, true, true},
     };
+
+    private Boolean Selected[][] = {
+            {false, false, false, false},
+            {false, false, false, false},
+            {false, false, false, false},
+            {false, false, false, false},
+            {false, false, false, false},
+    };
+
+    public boolean getSelected(int i, int j) {
+        return Selected[i][j];
+    }
+
+    public void setSelected(int i, int j, boolean val) {
+        Selected[i][j] = val;
+    }
 
     public String[] getQuestions() {
         return Questions;
@@ -34,7 +50,7 @@ public class QuestionLib {
         return Choices;
     }
 
-    public String[][] getAnswers() {
+    public boolean[][] getAnswers() {
         return Answers;
     }
 
