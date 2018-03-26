@@ -19,7 +19,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome "
+            android:text="@string/welcome_label"
             android:textSize="18sp" />
 
         <TextView
@@ -36,9 +36,8 @@
 
         <Button
             android:id="@+id/logoutbutton"
-            android:layout_width="wrap_content"
+            android:layout_width="83dp"
             android:layout_height="36dp"
-            android:background="#F0D68C"
             android:onClick="logout"
             android:text="Logout"
             android:textSize="12sp" />
@@ -93,9 +92,9 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Space
-                android:layout_width="120dp"
+                android:layout_width="-0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5" />
+                android:layout_weight="1" />
 
             <Spinner
                 android:id="@+id/spinner"
@@ -104,12 +103,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
             <Button
-                android:id="@+id/button"
+                android:id="@+id/loadButton"
                 android:layout_width="83dp"
                 android:layout_height="36dp"
                 android:text="Load"
                 android:onClick="load"
-                android:background="#F0D68C"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

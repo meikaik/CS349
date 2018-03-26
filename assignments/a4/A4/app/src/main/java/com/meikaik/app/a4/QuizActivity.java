@@ -1,9 +1,12 @@
 package com.meikaik.app.a4;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Chronometer;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,14 +17,13 @@ import android.widget.RadioGroup.LayoutParams;
 import android.widget.CheckBox;
 import android.widget.Button;
 
-
-import org.w3c.dom.Text;
-
 public class QuizActivity extends AppCompatActivity {
 
     QuestionLib questions = new QuestionLib();
     TextView question;
     TextView questionNumber;
+    Chronometer chrono;
+
 
     String username;;
     int currentQNumber = 1;
@@ -44,11 +46,12 @@ public class QuizActivity extends AppCompatActivity {
         question = findViewById(R.id.question);
         questionNumber = findViewById(R.id.questionNumber);
         updateQuestion();
+        setButtonColor();
+        countup();
     }
 
     void SetName(){
         TextView label = findViewById(R.id.username);
-
         // set username
         label.setText(username);
     }
@@ -81,6 +84,8 @@ public class QuizActivity extends AppCompatActivity {
             intent.putExtra("username", username);
             intent.putExtra("score", String.valueOf(currentScore));
             intent.putExtra("totalQuestions", String.valueOf(numQuestions));
+            intent.putExtra("timeTaken", chrono.getText());
+            System.out.println(chrono.getText());
             startActivity(intent);
         }
     }
@@ -95,9 +100,10 @@ public class QuizActivity extends AppCompatActivity {
     void updateQuestion() {
         question.setText(questions.getQuestions()[currentQNumber - 1]);
         String qNumber = String.valueOf(currentQNumber);
+        qNumber = qNumber + ": ";
         questionNumber.setText(qNumber);
         ImageView image_view = findViewById(R.id.imageView);
-        if (questions.getAnswers()[currentQNumber - 1].length > 1) {
+        if (!questions.getRadio()[currentQNumber - 1]) {
             RadioGroup rgp = (RadioGroup) findViewById(R.id.radiogroup);
             rgp.removeAllViews();
             // Set checkboxes
@@ -171,5 +177,25 @@ public class QuizActivity extends AppCompatActivity {
             Button nextButton = findViewById(R.id.next);
             nextButton.setText("Finish");
         }
+        Button prevButton = findViewById(R.id.previous);
+
+        if (currentQNumber == 1) {
+            prevButton.setEnabled(false);
+            prevButton.getBackground().clearColorFilter();
+        } else {
+            prevButton.setEnabled(true);
+            prevButton.getBackground().setColorFilter(Color.parseColor("#F0D68C"), PorterDuff.Mode.MULTIPLY);
+        }
+    }
+    private void setButtonColor() {
+        Button nextButton = findViewById(R.id.next);
+        nextButton.getBackground().setColorFilter(Color.parseColor("#F0D68C"), PorterDuff.Mode.MULTIPLY);
+        Button logoutButton = findViewById(R.id.logoutbutton);
+        logoutButton.getBackground().setColorFilter(Color.parseColor("#F0D68C"), PorterDuff.Mode.MULTIPLY);
+    }
+
+    void countup() {
+        chrono = findViewById(R.id.elapsedtime);
+        chrono.start();
     }
 }

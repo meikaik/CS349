@@ -38,9 +38,10 @@
             android:id="@+id/logoutbutton"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:background="#F0D68C"
             android:onClick="logout"
-            android:text="Logout"
+            android:text="@string/logout_button"
+            android:textAllCaps="false"
+
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -60,12 +61,25 @@
         android:layout_width="match_parent"
         android:layout_height="50dp" />
 
+    <TextView
+        android:id="@+id/timetaken"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Time Taken"
+        android:textAlignment="center"
+        android:textSize="20sp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
     <Button
         android:id="@+id/topicselection"
         android:layout_width="match_parent"
         android:layout_height="36dp"
-        android:background="#F0D68C"
         android:onClick="topicSelection"
-        android:text="Topic Selection"
+        android:text="@string/topic_selection"
+        android:textAllCaps="false"
+
         android:textSize="12sp" />
 </LinearLayout>

@@ -26,13 +26,21 @@ public class QuestionLib {
             {false, false, true, true},
     };
 
-    private Boolean Selected[][] = {
+    private boolean Selected[][] = {
             {false, false, false, false},
             {false, false, false, false},
             {false, false, false, false},
             {false, false, false, false},
             {false, false, false, false},
     };
+
+    private boolean radio[] = {
+            true, false, true, true, false
+    };
+
+    public boolean[] getRadio() {
+        return radio;
+    }
 
     public boolean getSelected(int i, int j) {
         return Selected[i][j];

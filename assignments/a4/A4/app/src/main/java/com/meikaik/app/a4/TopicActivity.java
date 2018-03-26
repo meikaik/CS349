@@ -1,11 +1,14 @@
 package com.meikaik.app.a4;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.view.View;
 
 
@@ -34,6 +37,8 @@ public class TopicActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_item, arraySpinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        setButtonColor();
+
     }
 
     void SetName(){
@@ -59,4 +64,12 @@ public class TopicActivity extends AppCompatActivity {
         intent.putExtra("username", username);
         startActivity(intent);
     }
+
+    void setButtonColor(){
+        Button logoutButton = findViewById(R.id.logoutbutton);
+        logoutButton.getBackground().setColorFilter(Color.parseColor("#F0D68C"), PorterDuff.Mode.MULTIPLY);
+        Button loadButton = findViewById(R.id.loadButton);
+        loadButton.getBackground().setColorFilter(Color.parseColor("#F0D68C"), PorterDuff.Mode.MULTIPLY);
+    }
+
 }
