@@ -1,2 +1,3 @@
-- Show the time taken by users for quiz -- time is shown in the results page
+- Show the time taken by users for individual questions (i.e., show a timer) as well as the overall time to finish the quiz (e.g., "Total time: 00:45s" in the Results screen).
+- Show a running timer while quiz is open
 - Support for internationalization -- strings are all in strings.xml instead of hard-coded
