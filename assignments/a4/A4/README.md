@@ -1,0 +1,2 @@
+- Show the time taken by users for quiz -- time is shown in the results page
+- Support for internationalization -- strings are all in strings.xml instead of hard-coded
