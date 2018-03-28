@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Chronometer;
@@ -30,6 +31,8 @@ public class QuizActivity extends AppCompatActivity {
     int currentScore = 0;
     int numQuestions;
 
+    int[] timeTakenArray = new int[5];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,25 +48,20 @@ public class QuizActivity extends AppCompatActivity {
         SetName();
         question = findViewById(R.id.question);
         questionNumber = findViewById(R.id.questionNumber);
+        startChronograh();
         updateQuestion();
         setButtonColor();
-        startChronograh();
     }
 
-    void SetName(){
-        TextView label = findViewById(R.id.username);
-        // set username
-        label.setText(username);
-    }
-
-    void logout(View view) {
+    public void logout(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         username = "";
         intent.putExtra("username", username);
         startActivity(intent);
     }
 
-    void next(View view) {
+    public void next(View view) {
+        updateChronoTime();
         if (currentQNumber < numQuestions) {
             currentQNumber++;
             updateQuestion();
@@ -73,14 +71,21 @@ public class QuizActivity extends AppCompatActivity {
         }
     }
 
-    void previous(View view) {
+    public void previous(View view) {
         if (currentQNumber > 1) {
+            updateChronoTime();
             currentQNumber--;
             updateQuestion();
         }
     }
 
-    void updateQuestion() {
+    private void SetName(){
+        TextView label = findViewById(R.id.username);
+        // set username
+        label.setText(username);
+    }
+
+    private void updateQuestion() {
         setQuestionMetadata();
 
         removeRadioCheckboxGroup();
@@ -90,6 +95,15 @@ public class QuizActivity extends AppCompatActivity {
         setFlagImage();
 
         enableDisablePreviousButtion();
+    }
+
+    private void updateChronoTime() {
+        int elapsedTime = (int) ((SystemClock.elapsedRealtime() - chrono.getBase()))/1000;
+        int subtractedTime = 0;
+        for (int time : timeTakenArray) {
+            subtractedTime += time;
+        }
+        timeTakenArray[currentQNumber-1] += elapsedTime - subtractedTime;
     }
 
     private void setButtonColor() {
@@ -125,6 +139,7 @@ public class QuizActivity extends AppCompatActivity {
         intent.putExtra("score", String.valueOf(currentScore));
         intent.putExtra("totalQuestions", String.valueOf(numQuestions));
         intent.putExtra("timeTaken", chrono.getText());
+        intent.putExtra("timeTakenArray", timeTakenArray);
         startActivity(intent);
     }
 

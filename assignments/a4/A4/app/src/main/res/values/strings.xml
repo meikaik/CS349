@@ -10,6 +10,11 @@
     <string name="welcome_label">Welcome,</string>
 
     <string name="topic_selection">Topic Selection</string>
+    <string name="topic">Topic</string>
+    <string name="num_questions"># of Questions</string>
+    <string name="load">Load</string>
+
+
 
 
 </resources>

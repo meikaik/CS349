@@ -27,7 +27,7 @@ public class TopicActivity extends AppCompatActivity {
 
         // extract the intent value to a string
         username = intent.getStringExtra("username");
-        SetName();
+        setName();
 
         String[] arraySpinner = new String[] {
                 "1", "2", "3", "4", "5"
@@ -41,21 +41,16 @@ public class TopicActivity extends AppCompatActivity {
 
     }
 
-    void SetName(){
-        TextView label = findViewById(R.id.username);
 
-        // set username
-        label.setText(username);
-    }
 
-    void logout(View view) {
+    public void logout(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         username = "";
         intent.putExtra("username", username);
         startActivity(intent);
     }
 
-    void load(View view) {
+    public void load(View view) {
         Spinner spinner = findViewById(R.id.spinner);
         String spinnerVal = spinner.getSelectedItem().toString();
 
@@ -65,7 +60,14 @@ public class TopicActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    void setButtonColor(){
+    private void setName(){
+        TextView label = findViewById(R.id.username);
+
+        // set username
+        label.setText(username);
+    }
+
+    private void setButtonColor(){
         Button logoutButton = findViewById(R.id.logoutbutton);
         logoutButton.getBackground().setColorFilter(Color.parseColor("#F0D68C"), PorterDuff.Mode.MULTIPLY);
         Button loadButton = findViewById(R.id.loadButton);

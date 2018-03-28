@@ -15,6 +15,8 @@ public class ResultsActivity extends AppCompatActivity {
     String username;
     String score;
     String timetaken;
+    String totalQuestions;
+    int[] timeTakenArray;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +28,8 @@ public class ResultsActivity extends AppCompatActivity {
         // extract the intent value to a string
         username = intent.getStringExtra("username");
         score = intent.getStringExtra("score");
-        String totalQuestions = intent.getStringExtra("totalQuestions");
+        timeTakenArray = intent.getIntArrayExtra("timeTakenArray");
+        totalQuestions = intent.getStringExtra("totalQuestions");
         score = "Your Score: " + score + "/" + totalQuestions;
 
         timetaken = intent.getStringExtra("timeTaken");
@@ -37,32 +40,39 @@ public class ResultsActivity extends AppCompatActivity {
         setButtonColor();
     }
 
-    void setName(){
+    private void setName(){
         TextView label = findViewById( R.id.username);
 
         // set username
         label.setText(username);
     }
 
-    void setResults() {
+    private void setResults() {
         TextView scoreLabel = findViewById(R.id.score);
 
         scoreLabel.setText(score);
     }
-    void setTimeTaken() {
+    private void setTimeTaken() {
         TextView timetakenfield = findViewById(R.id.timetaken);
         String timeTakenFormatted = "Time Taken: " + timetaken;
         timetakenfield.setText(timeTakenFormatted);
+
+        TextView perQuestionField = findViewById(R.id.perQuestion);
+        String individualTimes = "";
+        for (int i = 1; i <= Integer.parseInt(totalQuestions); i++) {
+            individualTimes += "Q" + i + ": " + timeTakenArray[i - 1] + "sec ";
+        }
+        perQuestionField.setText(individualTimes);
     }
 
-    void logout(View view) {
+    public void logout(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         username = "";
         intent.putExtra("username", username);
         startActivity(intent);
     }
 
-    void topicSelection(View view) {
+    public void topicSelection(View view) {
         Intent intent = new Intent(this, TopicActivity.class);
         intent.putExtra("username", username);
         startActivity(intent);
