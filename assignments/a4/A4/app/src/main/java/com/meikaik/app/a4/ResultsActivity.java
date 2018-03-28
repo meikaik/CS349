@@ -31,25 +31,25 @@ public class ResultsActivity extends AppCompatActivity {
 
         timetaken = intent.getStringExtra("timeTaken");
 
-        SetName();
-        SetResult();
-        SetTimeTaken();
+        setName();
+        setResults();
+        setTimeTaken();
         setButtonColor();
     }
 
-    void SetName(){
+    void setName(){
         TextView label = findViewById( R.id.username);
 
         // set username
         label.setText(username);
     }
 
-    void SetResult() {
+    void setResults() {
         TextView scoreLabel = findViewById(R.id.score);
 
         scoreLabel.setText(score);
     }
-    void SetTimeTaken() {
+    void setTimeTaken() {
         TextView timetakenfield = findViewById(R.id.timetaken);
         String timeTakenFormatted = "Time Taken: " + timetaken;
         timetakenfield.setText(timeTakenFormatted);

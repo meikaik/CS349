@@ -47,7 +47,7 @@ public class QuizActivity extends AppCompatActivity {
         questionNumber = findViewById(R.id.questionNumber);
         updateQuestion();
         setButtonColor();
-        countup();
+        startChronograh();
     }
 
     void SetName(){
@@ -68,25 +68,8 @@ public class QuizActivity extends AppCompatActivity {
             currentQNumber++;
             updateQuestion();
         } else {
-            boolean[][] answers = questions.getAnswers();
-            for (int i = 0; i < answers.length; i++) {
-                boolean correct = true;
-                for (int j = 0; j < answers[0].length; j++) {
-                    if (answers[i][j] != questions.getSelected(i, j)) {
-                        correct = false;
-                    }
-                }
-                if (correct) {
-                    currentScore += 1;
-                }
-            }
-            Intent intent = new Intent(this, ResultsActivity.class);
-            intent.putExtra("username", username);
-            intent.putExtra("score", String.valueOf(currentScore));
-            intent.putExtra("totalQuestions", String.valueOf(numQuestions));
-            intent.putExtra("timeTaken", chrono.getText());
-            System.out.println(chrono.getText());
-            startActivity(intent);
+            calculateScore();
+            gotoResults();
         }
     }
 
@@ -98,61 +81,130 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     void updateQuestion() {
+        setQuestionMetadata();
+
+        removeRadioCheckboxGroup();
+
+        setRadioCheckboxGroup();
+
+        setFlagImage();
+
+        enableDisablePreviousButtion();
+    }
+
+    private void setButtonColor() {
+        Button nextButton = findViewById(R.id.next);
+        nextButton.getBackground().setColorFilter(Color.parseColor("#F0D68C"), PorterDuff.Mode.MULTIPLY);
+        Button logoutButton = findViewById(R.id.logoutbutton);
+        logoutButton.getBackground().setColorFilter(Color.parseColor("#F0D68C"), PorterDuff.Mode.MULTIPLY);
+    }
+
+    private void startChronograh() {
+        chrono = findViewById(R.id.elapsedtime);
+        chrono.start();
+    }
+
+    private void calculateScore() {
+        boolean[][] answers = questions.getAnswers();
+        for (int i = 0; i < answers.length; i++) {
+            boolean correct = true;
+            for (int j = 0; j < answers[0].length; j++) {
+                if (answers[i][j] != questions.getSelected(i, j)) {
+                    correct = false;
+                }
+            }
+            if (correct) {
+                currentScore += 1;
+            }
+        }
+    }
+
+    private void gotoResults() {
+        Intent intent = new Intent(this, ResultsActivity.class);
+        intent.putExtra("username", username);
+        intent.putExtra("score", String.valueOf(currentScore));
+        intent.putExtra("totalQuestions", String.valueOf(numQuestions));
+        intent.putExtra("timeTaken", chrono.getText());
+        startActivity(intent);
+    }
+
+    private void setQuestionMetadata() {
+        TextView questionFraction = findViewById(R.id.questionfraction);
+        questionFraction.setText(currentQNumber + "/" + numQuestions);
+
         question.setText(questions.getQuestions()[currentQNumber - 1]);
         String qNumber = String.valueOf(currentQNumber);
         qNumber = qNumber + ": ";
         questionNumber.setText(qNumber);
-        ImageView image_view = findViewById(R.id.imageView);
+
+        if (currentQNumber == numQuestions) {
+            Button nextButton = findViewById(R.id.next);
+            nextButton.setText("Finish");
+        }
+    }
+
+    private void removeRadioCheckboxGroup() {
+        RadioGroup rgp = (RadioGroup) findViewById(R.id.radiogroup);
+        rgp.removeAllViews();
+        LinearLayout linearl = (LinearLayout) findViewById(R.id.checkboxgroup);
+        linearl.removeAllViews();
+    }
+
+    private void setRadioCheckboxGroup() {
         if (!questions.getRadio()[currentQNumber - 1]) {
-            RadioGroup rgp = (RadioGroup) findViewById(R.id.radiogroup);
-            rgp.removeAllViews();
-            // Set checkboxes
-            LinearLayout linearl = (LinearLayout) findViewById(R.id.checkboxgroup);
-            LinearLayout.LayoutParams checkParams;
-            linearl.removeAllViews();
-            for (int i = 0; i <= 3; i++) {
-                CheckBox cb = new CheckBox(this);
-                cb.setText(questions.getChoices()[currentQNumber - 1][i]);
-                cb.setId(i);
-                cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()  {
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundbutton, boolean bool) {
-                        questions.setSelected(currentQNumber - 1, compoundbutton.getId(), bool);
-                    }
-                });
-                if (questions.getSelected(currentQNumber-1, i)) {
-                    cb.setChecked(true);
-                }
-                checkParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                linearl.addView(cb, checkParams);
-            }
+            redrawCheckboxGroup();
         } else {
-            // Set radio buttons
-            RadioGroup rgp = (RadioGroup) findViewById(R.id.radiogroup);
-            rgp.removeAllViews();
-            RadioGroup.LayoutParams rprms;
-            LinearLayout linearl = (LinearLayout) findViewById(R.id.checkboxgroup);
-            linearl.removeAllViews();
-            for (int i = 0; i <= 3; i++) {
-                RadioButton radioButton = new RadioButton(this);
-                radioButton.setText(questions.getChoices()[currentQNumber - 1][i]);
-                radioButton.setId(i);
-                if (questions.getSelected(currentQNumber-1, i)) {
-                    radioButton.setChecked(true);
-                }
-                rprms = new RadioGroup.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                rgp.addView(radioButton, rprms);
-            }
-            rgp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            redrawRadioGroup();
+        }
+    }
+
+    private void redrawCheckboxGroup() {
+        LinearLayout linearl = (LinearLayout) findViewById(R.id.checkboxgroup);
+        LinearLayout.LayoutParams checkBoxChoices;
+        for (int i = 0; i <= 3; i++) {
+            CheckBox cb = new CheckBox(this);
+            cb.setText(questions.getChoices()[currentQNumber - 1][i]);
+            cb.setId(i);
+            cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()  {
                 @Override
-                public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    for (int j = 0; j <= 3; j++) {
-                        questions.setSelected(currentQNumber - 1, j, false);
-                    }
-                    questions.setSelected(currentQNumber-1, checkedId, true);
+                public void onCheckedChanged(CompoundButton compoundbutton, boolean bool) {
+                    questions.setSelected(currentQNumber - 1, compoundbutton.getId(), bool);
                 }
             });
+            if (questions.getSelected(currentQNumber-1, i)) {
+                cb.setChecked(true);
+            }
+            checkBoxChoices = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            linearl.addView(cb, checkBoxChoices);
         }
+    }
+
+    private void redrawRadioGroup() {
+        RadioGroup rgp = (RadioGroup) findViewById(R.id.radiogroup);
+        RadioGroup.LayoutParams radioGroupChoices;
+        for (int i = 0; i <= 3; i++) {
+            RadioButton radioButton = new RadioButton(this);
+            radioButton.setText(questions.getChoices()[currentQNumber - 1][i]);
+            radioButton.setId(i);
+            if (questions.getSelected(currentQNumber-1, i)) {
+                radioButton.setChecked(true);
+            }
+            radioGroupChoices = new RadioGroup.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            rgp.addView(radioButton, radioGroupChoices);
+        }
+        rgp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                for (int j = 0; j <= 3; j++) {
+                    questions.setSelected(currentQNumber - 1, j, false);
+                }
+                questions.setSelected(currentQNumber-1, checkedId, true);
+            }
+        });
+    }
+
+    private void setFlagImage() {
+        ImageView image_view = findViewById(R.id.imageView);
         switch(currentQNumber){
             case 1:
                 image_view.setImageResource(R.drawable.image1);
@@ -170,15 +222,10 @@ public class QuizActivity extends AppCompatActivity {
                 image_view.setImageResource(R.drawable.image5);
                 break;
         }
-        TextView questionFraction = findViewById(R.id.questionfraction);
-        questionFraction.setText(currentQNumber + "/" + numQuestions);
+    }
 
-        if (currentQNumber == numQuestions) {
-            Button nextButton = findViewById(R.id.next);
-            nextButton.setText("Finish");
-        }
+    private void enableDisablePreviousButtion() {
         Button prevButton = findViewById(R.id.previous);
-
         if (currentQNumber == 1) {
             prevButton.setEnabled(false);
             prevButton.getBackground().clearColorFilter();
@@ -187,15 +234,6 @@ public class QuizActivity extends AppCompatActivity {
             prevButton.getBackground().setColorFilter(Color.parseColor("#F0D68C"), PorterDuff.Mode.MULTIPLY);
         }
     }
-    private void setButtonColor() {
-        Button nextButton = findViewById(R.id.next);
-        nextButton.getBackground().setColorFilter(Color.parseColor("#F0D68C"), PorterDuff.Mode.MULTIPLY);
-        Button logoutButton = findViewById(R.id.logoutbutton);
-        logoutButton.getBackground().setColorFilter(Color.parseColor("#F0D68C"), PorterDuff.Mode.MULTIPLY);
-    }
 
-    void countup() {
-        chrono = findViewById(R.id.elapsedtime);
-        chrono.start();
-    }
+
 }

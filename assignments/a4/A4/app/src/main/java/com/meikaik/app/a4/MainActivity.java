@@ -10,10 +10,6 @@ import android.widget.Button;
 import android.text.Editable;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.widget.TextView.OnEditorActionListener;
-import android.widget.TextView;
-import android.view.KeyEvent;
-import android.view.inputmethod.EditorInfo;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
         nextButton = findViewById(R.id.NextButton);
 
         name.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() == 0) {
@@ -38,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     nextButton.setEnabled(true);
                     nextButton.getBackground().setColorFilter(Color.parseColor("#F0D68C"), PorterDuff.Mode.MULTIPLY);
-
                 }
             }
             @Override
@@ -49,18 +43,6 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
-
-//        name.setOnEditorActionListener(new OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                if (actionId == EditorInfo.IME_ACTION_SEND) {
-//                    nextButton.callOnClick();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-
 
         }
 
